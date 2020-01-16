@@ -1,26 +1,28 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { SettingsState } from './context/settings/SettingsState';
+import { WorkingState } from './context/working/WorkingState';
+
+import Countdown from './components/Countdown';
+import Settings from './components/Settings';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SettingsState>
+      <WorkingState>
+        <div className="container text-center my-4">
+          <div className="row">
+            <div className="col-12">
+              <Countdown />
+            </div>
+
+            <div className="col-12">
+              <Settings />
+            </div>
+          </div>
+        </div>
+      </WorkingState>
+    </SettingsState>
   );
-}
+};
 
 export default App;
