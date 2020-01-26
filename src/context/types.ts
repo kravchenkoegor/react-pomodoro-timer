@@ -5,8 +5,10 @@ export const START_REST: string = 'START_REST';
 export const STOP_REST: string = 'STOP_REST';
 export const TICK: string = 'TICK';
 export const ADD_POMODORO: string = 'ADD_POMODORO';
+export const UPDATE_TIME_LEFT: string = 'UPDATE_TIME_LEFT';
 
 // settingsContext
+export const SHOW_SETTINGS: string = 'SHOW_SETTINGS';
 export const SET_WORK_DURATION: string = 'SET_WORK_DURATION';
 export const SET_SHORT_BREAK: string = 'SET_SHORT_BREAK';
 export const SET_LONG_BREAK: string = 'SET_LONG_BREAK';
@@ -33,6 +35,7 @@ export interface IWorkingState {
 }
 
 export interface ISettingsState {
+  settingsIsVisible: boolean;
   workDuration: number;
   shortBreak: number;
   longBreak: number;

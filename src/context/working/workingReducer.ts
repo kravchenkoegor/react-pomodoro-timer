@@ -4,6 +4,7 @@ import {
   START_REST,
   STOP_REST,
   TICK,
+  UPDATE_TIME_LEFT,
   IActionState,
   IWorkingState
 } from '../types';
@@ -71,6 +72,19 @@ const handlers: { [k: string]: IWorkingState } = {
     }
 
     return newState;
+  },
+  // @ts-ignore
+  [UPDATE_TIME_LEFT]: (
+    state: IWorkingState,
+    payload: number
+  ): IWorkingState => {
+    return {
+      ...state,
+      timeLeft: {
+        minutes: payload,
+        seconds: 0
+      }
+    };
   },
   // @ts-ignore
   DEFAULT: (state: IWorkingState): IWorkingState => state

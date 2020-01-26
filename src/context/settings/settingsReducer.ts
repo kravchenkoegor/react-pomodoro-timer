@@ -1,4 +1,5 @@
 import {
+  SHOW_SETTINGS,
   SET_WORK_DURATION,
   SET_SHORT_BREAK,
   SET_LONG_BREAK,
@@ -8,6 +9,12 @@ import {
 } from '../types';
 
 const handlers: { [k: string]: ISettingsState } = {
+  [SHOW_SETTINGS]: (state: ISettingsState, payload: boolean) => {
+    return {
+      ...state,
+      settingsIsVisible: payload
+    };
+  },
   [SET_WORK_DURATION]: (state: ISettingsState, payload: number) => {
     return {
       ...state,

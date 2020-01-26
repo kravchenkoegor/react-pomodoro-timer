@@ -1,5 +1,6 @@
 import React, { useContext, useRef } from 'react';
 import { SettingsContext } from '../context/settings/settingsContext';
+import Button from '../components/Button';
 
 const Settings = () => {
   const {
@@ -10,7 +11,8 @@ const Settings = () => {
     setWorkDuration,
     setShortBreak,
     setLongBreak,
-    setAutoStart
+    setAutoStart,
+    showSettings
   } = useContext(SettingsContext);
 
   const workDurationInput = useRef(workDuration);
@@ -43,35 +45,41 @@ const Settings = () => {
   };
 
   return (
-    <div className="border px-3 py-3 my-4">
-      <div className="d-flex">
-        <div className="form-group">
-          <input
-            className="form-control"
-            type="number"
-            ref={workDurationInput}
-            defaultValue={workDuration}
-          />
-          <small className="form-text text-muted">Pomodoro</small>
-        </div>
-        <div className="form-group ml-3">
-          <input
-            className="form-control"
-            type="number"
-            ref={shortBreakInput}
-            defaultValue={shortBreak}
-          />
-          <small className="form-text text-muted">Short Break</small>
-        </div>
-        <div className="form-group ml-3">
-          <input
-            className="form-control"
-            type="number"
-            ref={longBreakInput}
-            defaultValue={longBreak}
-          />
-          <small className="form-text text-muted">Long Break</small>
-        </div>
+    <div className="settings">
+      <h2 className="settings__title">
+        Timer Settings
+        <span
+          className="settings__close"
+          onClick={showSettings.bind(null, false)}
+        ></span>
+      </h2>
+
+      <div className="form-group">
+        <p className="form-text text-muted">Pomodoro</p>
+        <input
+          className="form-control"
+          type="number"
+          ref={workDurationInput}
+          defaultValue={workDuration}
+        />
+      </div>
+      <div className="form-group">
+        <p className="form-text text-muted">Short Break</p>
+        <input
+          className="form-control"
+          type="number"
+          ref={shortBreakInput}
+          defaultValue={shortBreak}
+        />
+      </div>
+      <div className="form-group">
+        <p className="form-text text-muted">Long Break</p>
+        <input
+          className="form-control"
+          type="number"
+          ref={longBreakInput}
+          defaultValue={longBreak}
+        />
       </div>
       <div className="form-check">
         <input
@@ -82,13 +90,11 @@ const Settings = () => {
         />
         <label className="form-check-label">Auto start next round?</label>
       </div>
-      <button
-        type="button"
-        className="btn btn-success mt-3"
-        onClick={saveSettings}
-      >
-        Save
-      </button>
+      <Button
+        onPress={saveSettings}
+        btnClassName="settings__btn"
+        btnText="save"
+      />
     </div>
   );
 };

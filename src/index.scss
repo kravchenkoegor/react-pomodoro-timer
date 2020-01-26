@@ -1,5 +1,236 @@
-@import 'bootstrap/scss/bootstrap.scss';
+@import 'bootstrap/scss/_functions';
+@import 'bootstrap/scss/_variables';
+@import 'bootstrap/scss/_mixins';
+@import 'bootstrap/scss/_reboot';
+@import 'bootstrap/scss/_forms.scss';
 
-h1 {
-  color: white;
+// $pomodoro: #d97e7e;
+// $inside-clock: #e96d6d;
+// $time-light: #fee7e7;
+// $time-dark: #f99292;
+// $top-lines: #b18686;
+$font-color: #707070;
+
+$sunset-orange: #fd5e53;
+$cardinal: #c5283d;
+$french-raspberry: #c42847;
+$baby-powder: #f9fcfb;
+$magic-mint: #b0eacd;
+$green-crayola: #21bf73;
+
+$base-transition: 0.25s ease-in-out;
+
+$ipad: 768px;
+$desktop: 1279px;
+
+@mixin bp($point) {
+  @media (min-width: $point) {
+    @content;
+  }
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+}
+
+.circular-progress {
+  &__svg {
+    transform: rotate(-90deg);
+    transform-origin: center;
+  }
+
+  &__bg {
+    fill: $cardinal;
+    stroke: lighten($sunset-orange, 25%);
+    position: relative;
+    z-index: 1;
+  }
+
+  &__border {
+    fill: transparent;
+    stroke: $sunset-orange;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.timer {
+  position: relative;
+
+  &__title {
+    color: $baby-powder;
+    left: 50%;
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.status-bar {
+  color: $font-color;
+  margin-bottom: 20px;
+
+  &__info {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  &__icon {
+    display: none;
+
+    @include bp($ipad) {
+      cursor: pointer;
+      display: block;
+      fill: $sunset-orange;
+
+      &:hover {
+        fill: darken($sunset-orange, 10%);
+      }
+    }
+  }
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+
+  &__btn {
+    border: 2px solid $sunset-orange;
+    border-radius: 4rem;
+    flex-grow: 1;
+    font-weight: 700;
+    height: 40px;
+    letter-spacing: 0.1em;
+    max-width: 360px;
+    text-transform: uppercase;
+    width: 100%;
+
+    &:focus,
+    &.focus {
+      outline: none;
+    }
+
+    &_start {
+      background-color: $sunset-orange;
+      color: #fff;
+    }
+
+    &_pause {
+      background-color: lighten($sunset-orange, 25%);
+      color: $sunset-orange;
+    }
+
+    &_accent {
+      background: $green-crayola;
+      border-color: $green-crayola;
+      color: #fff;
+      margin-top: 10px;
+
+      @include bp($ipad) {
+        display: none;
+      }
+    }
+  }
+}
+
+.wrapper {
+  background-color: #f9fcfb;
+  height: 100%;
+  min-height: 100vh;
+  min-width: 320px;
+  overflow-x: hidden;
+  padding: 15px;
+  width: 100%;
+}
+
+.countdown {
+  text-align: center;
+}
+
+.settings {
+  margin: 0 auto;
+  max-width: 360px;
+  width: 100%;
+
+  &__title {
+    margin-bottom: 1rem;
+    position: relative;
+  }
+
+  &__close {
+    cursor: pointer;
+    height: 1em;
+    position: absolute;
+    right: 0;
+    top: 6px;
+    width: 1em;
+
+    &:before,
+    &:after {
+      background-color: #000;
+      content: '';
+      display: block;
+      height: 1em;
+      left: 50%;
+      position: absolute;
+      top: 0;
+      transform: translateX(-50%);
+      transition: background-color $base-transition;
+      width: 2px;
+    }
+
+    &:before {
+      transform: rotate(45deg);
+    }
+
+    &:after {
+      transform: rotate(-45deg);
+    }
+
+    &:hover {
+      &:before,
+      &:after {
+        background-color: $sunset-orange;
+      }
+    }
+  }
+
+  &__btn {
+    background-color: $green-crayola;
+    border: none;
+    border-radius: 4rem;
+    color: #fff;
+    font-weight: 700;
+    height: 40px;
+    letter-spacing: 0.1em;
+    margin-top: 1rem;
+    text-transform: uppercase;
+    transition: background-color $base-transition;
+    width: 100%;
+
+    &:focus,
+    &.focus {
+      outline: none;
+    }
+
+    &:hover {
+      background-color: darken($green-crayola, 5%);
+    }
+  }
+
+  // customize bootstrap styles
+  .form {
+    &-text {
+      color: $font-color;
+      margin: 0 0 0.5rem;
+    }
+
+    &-check-label {
+      color: $font-color;
+    }
+  }
 }

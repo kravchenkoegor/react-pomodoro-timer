@@ -1,4 +1,4 @@
-import React, { useReducer, useContext } from 'react';
+import React, { useReducer, useContext, useEffect } from 'react';
 import { SettingsContext } from '../settings/settingsContext';
 import { WorkingContext } from './workingContext';
 import { workingReducer } from './workingReducer';
@@ -8,7 +8,8 @@ import {
   START_REST,
   STOP_REST,
   TICK,
-  IWorkingState
+  IWorkingState,
+  UPDATE_TIME_LEFT
 } from '../types';
 
 export const WorkingState: React.FC = ({ children }) => {
@@ -31,23 +32,25 @@ export const WorkingState: React.FC = ({ children }) => {
   const tick = (duration: number) =>
     dispatch({ type: TICK, payload: duration });
 
+  useEffect(() => {
+    dispatch({ type: UPDATE_TIME_LEFT, payload: workDuration });
+  }, [workDuration]);
+
+  const value = {
+    start: state.start,
+    isWorking: state.isWorking,
+    isBreak: state.isBreak,
+    startWorking,
+    stopWorking,
+    startRest,
+    stopRest,
+    tick,
+    timeLeft: state.timeLeft,
+    pomodoros: state.pomodoros
+  };
+
   return (
-    <WorkingContext.Provider
-      value={
-        {
-          start: state.start,
-          isWorking: state.isWorking,
-          isBreak: state.isBreak,
-          startWorking,
-          stopWorking,
-          startRest,
-          stopRest,
-          tick,
-          timeLeft: state.timeLeft,
-          pomodoros: state.pomodoros
-        } as IWorkingState
-      }
-    >
+    <WorkingContext.Provider value={value as IWorkingState}>
       {children}
     </WorkingContext.Provider>
   );
