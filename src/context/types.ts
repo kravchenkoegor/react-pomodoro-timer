@@ -1,8 +1,6 @@
 // workingContext
-export const START_WORKING: string = 'START_WORKING';
-export const STOP_WORKING: string = 'STOP_WORKING';
-export const START_REST: string = 'START_REST';
-export const STOP_REST: string = 'STOP_REST';
+export const START_SESSION: string = 'START_SESSION';
+export const STOP_SESSION: string = 'STOP_SESSION';
 export const TICK: string = 'TICK';
 export const ADD_POMODORO: string = 'ADD_POMODORO';
 export const UPDATE_TIME_LEFT: string = 'UPDATE_TIME_LEFT';
@@ -23,15 +21,19 @@ export interface IActionState {
   payload?: any;
 }
 
+export interface ITime {
+  minutes: number;
+  seconds: number;
+}
+
 export interface IWorkingState {
-  start: Date;
-  isWorking: boolean;
-  isBreak: boolean;
-  timeLeft: {
-    minutes: number | null;
-    seconds: number | null;
-  };
-  pomodoros: number;
+  startTime: Date;
+  endTime: Date;
+  timeLeft: ITime;
+  session: boolean;
+  sessionOnPause: boolean;
+  sessionCompleted: boolean;
+  completed: number;
 }
 
 export interface ISettingsState {

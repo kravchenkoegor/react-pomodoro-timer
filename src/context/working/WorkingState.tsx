@@ -3,50 +3,48 @@ import { SettingsContext } from '../settings/settingsContext';
 import { WorkingContext } from './workingContext';
 import { workingReducer } from './workingReducer';
 import {
-  START_WORKING,
-  STOP_WORKING,
-  START_REST,
-  STOP_REST,
+  START_SESSION,
+  STOP_SESSION,
   TICK,
+  UPDATE_TIME_LEFT,
   IWorkingState,
-  UPDATE_TIME_LEFT
+  ITime
 } from '../types';
 
 export const WorkingState: React.FC = ({ children }) => {
   const { workDuration } = useContext(SettingsContext);
 
-  const [state, dispatch] = useReducer(workingReducer, {
-    isWorking: false,
-    isBreak: false,
+  const [state, dispatch]: [
+    IWorkingState,
+    React.Dispatch<{ type: string; payload?: number | ITime }>
+  ] = useReducer(workingReducer, {
+    session: false,
     timeLeft: {
       minutes: workDuration,
       seconds: 0
     },
-    pomodoros: 0
-  } as IWorkingState);
+    completed: 0
+  });
 
-  const startWorking = () => dispatch({ type: START_WORKING });
-  const stopWorking = () => dispatch({ type: STOP_WORKING });
-  const startRest = () => dispatch({ type: START_REST });
-  const stopRest = () => dispatch({ type: STOP_REST });
-  const tick = (duration: number) =>
-    dispatch({ type: TICK, payload: duration });
+  const startSession = (): void => dispatch({ type: START_SESSION });
+  const stopSession = (): void => dispatch({ type: STOP_SESSION });
+  const tick = (): void => dispatch({ type: TICK });
 
   useEffect(() => {
     dispatch({ type: UPDATE_TIME_LEFT, payload: workDuration });
   }, [workDuration]);
 
   const value = {
-    start: state.start,
-    isWorking: state.isWorking,
-    isBreak: state.isBreak,
-    startWorking,
-    stopWorking,
-    startRest,
-    stopRest,
+    startTime: state.startTime,
+    endTime: state.endTime,
+    session: state.session,
+    sessionOnPause: state.sessionOnPause,
+    sessionCompleted: state.sessionCompleted,
+    startSession,
+    stopSession,
     tick,
     timeLeft: state.timeLeft,
-    pomodoros: state.pomodoros
+    completed: state.completed
   };
 
   return (

@@ -1,21 +1,20 @@
 import {
-  START_WORKING,
-  STOP_WORKING,
-  START_REST,
-  STOP_REST,
+  START_SESSION,
+  STOP_SESSION,
   TICK,
   UPDATE_TIME_LEFT,
   IActionState,
-  IWorkingState
+  IWorkingState,
+  ITime
 } from '../types';
 
-const addMinutes = (date: Date, minutes: number): number => {
-  return Number(new Date(date.getTime() + minutes * 60000));
+const addTime = (date: Date, duration: ITime): Date => {
+  const { minutes, seconds } = duration;
+  return new Date(date.getTime() + minutes * 60000 + seconds * 1000);
 };
 
-const calculateTimeLeft = (duration: number, startTime: Date): any => {
-  const difference: number =
-    addMinutes(startTime, duration) - Number(new Date());
+const calculateTimeLeft = (endTime: Date): ITime => {
+  const difference: number = Number(endTime) - Number(new Date());
 
   if (difference > 0) {
     return {
@@ -31,49 +30,56 @@ const calculateTimeLeft = (duration: number, startTime: Date): any => {
 };
 
 const handlers: { [k: string]: IWorkingState } = {
-  [START_WORKING]: (state: IWorkingState): IWorkingState => ({
-    ...state,
-    start: new Date(),
-    isWorking: true
-  }),
-  [STOP_WORKING]: (state: IWorkingState): IWorkingState => ({
-    ...state,
-    isWorking: false
-  }),
-  [START_REST]: (state: IWorkingState): IWorkingState => ({
-    ...state,
-    start: new Date(),
-    isBreak: true
-  }),
-  [STOP_REST]: (state: IWorkingState): IWorkingState => ({
-    ...state,
-    isBreak: false
-  }),
-  [TICK]: (state: IWorkingState, duration: number): IWorkingState => {
-    const { start, isWorking, isBreak, pomodoros } = state;
-    const { minutes, seconds } = calculateTimeLeft(duration, start);
+  [START_SESSION]: (state: IWorkingState): IWorkingState => {
+    return {
+      ...state,
+      session: true,
+      startTime: new Date(),
+      endTime: addTime(new Date(), state.timeLeft)
+    };
+  },
+  [STOP_SESSION]: (state: IWorkingState): IWorkingState => {
+    return {
+      ...state,
+      session: false
+      // sessionOnPause: true,
+      // startTime: new Date()
+    };
+  },
+  [TICK]: (state: IWorkingState): IWorkingState => {
+    const { endTime } = state;
+    const { minutes, seconds } = calculateTimeLeft(endTime as Date);
 
     const newState = Object.assign(
       {},
       {
         ...state,
-        timeLeft: calculateTimeLeft(duration, start)
+        timeLeft: {
+          minutes,
+          seconds
+        }
       }
     );
 
-    if (!minutes && !seconds) {
-      newState.isWorking = !isWorking;
-      newState.isBreak = !isBreak;
-      newState.start = new Date();
+    // if (sessionOnPause) {
+    //   newState.sessionOnPause = false;
+    // }
 
-      if (isWorking) {
-        newState.pomodoros = pomodoros + 1;
-      }
+    if (!minutes && !seconds) {
+      delete newState.startTime;
+      delete newState.endTime;
+      // newState.isWorking = !isWorking;
+      // newState.isBreak = !isBreak;
+      // newState.start = new Date();
+      newState.session = false;
+
+      // if (isWorking) {
+      //   newState.completed = completed + 1;
+      // }
     }
 
     return newState;
   },
-  // @ts-ignore
   [UPDATE_TIME_LEFT]: (
     state: IWorkingState,
     payload: number

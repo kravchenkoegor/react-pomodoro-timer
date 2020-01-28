@@ -12,8 +12,8 @@ import {
 export const SettingsState: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(settingsReducer, {
     settingsIsVisible: false,
-    workDuration: 25,
-    shortBreak: 5,
+    workDuration: 0.2,
+    shortBreak: 0.1,
     longBreak: 15,
     autoStart: true
   });
