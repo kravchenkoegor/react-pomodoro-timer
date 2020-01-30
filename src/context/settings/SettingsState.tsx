@@ -29,18 +29,30 @@ export const SettingsState: React.FC = ({ children }) => {
   const setAutoStart = (autoStart: boolean) =>
     dispatch({ type: SET_AUTOSTART, payload: autoStart });
 
-  const value = {
-    workDuration: state.workDuration,
-    shortBreak: state.shortBreak,
-    longBreak: state.longBreak,
-    autoStart: state.autoStart,
-    setWorkDuration,
-    setShortBreak,
-    setLongBreak,
-    setAutoStart,
-    settingsIsVisible: state.settingsIsVisible,
-    showSettings
-  };
+  // create new object to prevent re-render
+  const value = Object.assign(
+    {
+      showSettings,
+      setWorkDuration,
+      setShortBreak,
+      setLongBreak,
+      setAutoStart
+    },
+    state
+  );
+
+  // const value = {
+  //   workDuration: state.workDuration,
+  //   shortBreak: state.shortBreak,
+  //   longBreak: state.longBreak,
+  //   autoStart: state.autoStart,
+  //   setWorkDuration,
+  //   setShortBreak,
+  //   setLongBreak,
+  //   setAutoStart,
+  //   settingsIsVisible: state.settingsIsVisible,
+  //   showSettings
+  // };
 
   return (
     <SettingsContext.Provider value={value}>

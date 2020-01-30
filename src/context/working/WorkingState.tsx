@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext } from 'react';
 import { SettingsContext } from '../settings/settingsContext';
 import { WorkingContext } from './workingContext';
 import { workingReducer } from './workingReducer';
@@ -23,29 +23,22 @@ export const WorkingState: React.FC = ({ children }) => {
       minutes: workDuration,
       seconds: 0
     },
-    completed: 0
+    completed: 0,
+    isWorking: false,
+    isBreak: false
   });
 
   const startSession = (): void => dispatch({ type: START_SESSION });
   const stopSession = (): void => dispatch({ type: STOP_SESSION });
   const tick = (): void => dispatch({ type: TICK });
+  const updateTimeLeft = (payload: number): void =>
+    dispatch({ type: UPDATE_TIME_LEFT, payload });
 
-  useEffect(() => {
-    dispatch({ type: UPDATE_TIME_LEFT, payload: workDuration });
-  }, [workDuration]);
-
-  const value = {
-    startTime: state.startTime,
-    endTime: state.endTime,
-    session: state.session,
-    sessionOnPause: state.sessionOnPause,
-    sessionCompleted: state.sessionCompleted,
-    startSession,
-    stopSession,
-    tick,
-    timeLeft: state.timeLeft,
-    completed: state.completed
-  };
+  // create new object to prevent re-render
+  const value = Object.assign(
+    { startSession, stopSession, tick, updateTimeLeft },
+    state
+  );
 
   return (
     <WorkingContext.Provider value={value as IWorkingState}>

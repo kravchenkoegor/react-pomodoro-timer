@@ -31,9 +31,13 @@ const calculateTimeLeft = (endTime: Date): ITime => {
 
 const handlers: { [k: string]: IWorkingState } = {
   [START_SESSION]: (state: IWorkingState): IWorkingState => {
+    const { isWorking, isBreak } = state;
+
     return {
       ...state,
+      isWorking: !isWorking && !isBreak ? true : isWorking,
       session: true,
+      sessionOnPause: false,
       startTime: new Date(),
       endTime: addTime(new Date(), state.timeLeft)
     };
@@ -41,13 +45,12 @@ const handlers: { [k: string]: IWorkingState } = {
   [STOP_SESSION]: (state: IWorkingState): IWorkingState => {
     return {
       ...state,
-      session: false
-      // sessionOnPause: true,
-      // startTime: new Date()
+      session: false,
+      sessionOnPause: true
     };
   },
   [TICK]: (state: IWorkingState): IWorkingState => {
-    const { endTime } = state;
+    const { completed, endTime, isWorking, isBreak } = state;
     const { minutes, seconds } = calculateTimeLeft(endTime as Date);
 
     const newState = Object.assign(
@@ -61,21 +64,17 @@ const handlers: { [k: string]: IWorkingState } = {
       }
     );
 
-    // if (sessionOnPause) {
-    //   newState.sessionOnPause = false;
-    // }
-
     if (!minutes && !seconds) {
       delete newState.startTime;
       delete newState.endTime;
-      // newState.isWorking = !isWorking;
-      // newState.isBreak = !isBreak;
-      // newState.start = new Date();
+      newState.isWorking = !isWorking;
+      newState.isBreak = !isBreak;
+      newState.startTime = new Date();
       newState.session = false;
 
-      // if (isWorking) {
-      //   newState.completed = completed + 1;
-      // }
+      if (isWorking) {
+        newState.completed = completed + 1;
+      }
     }
 
     return newState;

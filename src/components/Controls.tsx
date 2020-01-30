@@ -5,11 +5,7 @@ import Button from '../components/Button';
 // import { ReactComponent as ReloadIcon } from './icons/reload.svg';
 
 const Controls: React.FC = () => {
-  const {
-    // autoStart,
-    settingsIsVisible,
-    showSettings
-  } = useContext(SettingsContext);
+  const { settingsIsVisible, showSettings } = useContext(SettingsContext);
 
   const { session, startSession, stopSession, tick } = useContext(
     WorkingContext

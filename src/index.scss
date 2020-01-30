@@ -44,17 +44,32 @@ body {
   }
 
   &__bg {
-    fill: $cardinal;
-    stroke: lighten($sunset-orange, 25%);
     position: relative;
     z-index: 1;
+
+    .working & {
+      fill: $cardinal;
+      stroke: lighten($sunset-orange, 25%);
+    }
+
+    .break & {
+      fill: lighten(#04471c, 5%);
+      stroke: $magic-mint;
+    }
   }
 
   &__border {
     fill: transparent;
-    stroke: $sunset-orange;
     position: relative;
     z-index: 2;
+
+    .working & {
+      stroke: $sunset-orange;
+    }
+
+    .break & {
+      stroke: $green-crayola;
+    }
   }
 }
 
@@ -140,12 +155,9 @@ body {
 }
 
 .wrapper {
-  // background-color: #f9fcfb;
   height: 100%;
   margin: 0 auto;
   max-width: 720px;
-  // min-height: 100vh;
-  // min-width: 320px;
   overflow-x: hidden;
   padding: 15px;
   width: 100%;

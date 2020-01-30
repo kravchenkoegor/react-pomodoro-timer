@@ -31,9 +31,11 @@ export interface IWorkingState {
   endTime: Date;
   timeLeft: ITime;
   session: boolean;
-  sessionOnPause: boolean;
+  sessionOnPause?: boolean;
   sessionCompleted: boolean;
   completed: number;
+  isWorking?: boolean;
+  isBreak?: boolean;
 }
 
 export interface ISettingsState {
