@@ -2,8 +2,8 @@
 export const START_SESSION: string = 'START_SESSION';
 export const STOP_SESSION: string = 'STOP_SESSION';
 export const TICK: string = 'TICK';
-export const ADD_POMODORO: string = 'ADD_POMODORO';
 export const UPDATE_TIME_LEFT: string = 'UPDATE_TIME_LEFT';
+export const RESET: string = 'RESET';
 
 // settingsContext
 export const SHOW_SETTINGS: string = 'SHOW_SETTINGS';
@@ -31,7 +31,7 @@ export interface IWorkingState {
   endTime: Date;
   timeLeft: ITime;
   session: boolean;
-  sessionOnPause?: boolean;
+  sessionPaused?: boolean;
   sessionCompleted: boolean;
   completed: number;
   isWorking?: boolean;

@@ -1,5 +1,6 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useRef, useState, useEffect } from 'react';
 import { SettingsContext } from '../context/settings/settingsContext';
+import { WorkingContext } from '../context/working/workingContext';
 import Button from '../components/Button';
 
 const Settings = () => {
@@ -15,10 +16,16 @@ const Settings = () => {
     showSettings
   } = useContext(SettingsContext);
 
+  const { reset: resetWorkingState } = useContext(WorkingContext);
+
   const workDurationInput = useRef(workDuration);
   const shortBreakInput = useRef(shortBreak);
   const longBreakInput = useRef(longBreak);
   const autoStartCheckbox = useRef(autoStart);
+
+  const [showAlert, setShowAlert] = useState(false);
+
+  let timeout: number | null = null;
 
   const saveSettings = () => {
     const workDurationValue = Number(workDurationInput.current.value);
@@ -42,7 +49,17 @@ const Settings = () => {
     if (autoStartValue !== autoStart) {
       setAutoStart(autoStartValue);
     }
+
+    setShowAlert(true);
+
+    timeout = window.setTimeout(() => setShowAlert(false), 2000);
+
+    resetWorkingState();
   };
+
+  useEffect(() => {
+    return () => (timeout ? clearTimeout(timeout as number) : undefined);
+  }, [timeout]);
 
   return (
     <div className="settings">
@@ -53,6 +70,10 @@ const Settings = () => {
           onClick={showSettings.bind(null, false)}
         ></span>
       </h2>
+
+      <div className={`settings__alert ${showAlert ? 'visible' : ''}`}>
+        Settings have been saved!
+      </div>
 
       <div className="form-group">
         <p className="form-text text-muted">Pomodoro</p>

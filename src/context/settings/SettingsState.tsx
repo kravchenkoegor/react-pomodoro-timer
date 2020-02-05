@@ -12,8 +12,8 @@ import {
 export const SettingsState: React.FC = ({ children }) => {
   const [state, dispatch] = useReducer(settingsReducer, {
     settingsIsVisible: false,
-    workDuration: 0.2,
-    shortBreak: 0.1,
+    workDuration: 25,
+    shortBreak: 5,
     longBreak: 15,
     autoStart: true
   });
@@ -40,19 +40,6 @@ export const SettingsState: React.FC = ({ children }) => {
     },
     state
   );
-
-  // const value = {
-  //   workDuration: state.workDuration,
-  //   shortBreak: state.shortBreak,
-  //   longBreak: state.longBreak,
-  //   autoStart: state.autoStart,
-  //   setWorkDuration,
-  //   setShortBreak,
-  //   setLongBreak,
-  //   setAutoStart,
-  //   settingsIsVisible: state.settingsIsVisible,
-  //   showSettings
-  // };
 
   return (
     <SettingsContext.Provider value={value}>

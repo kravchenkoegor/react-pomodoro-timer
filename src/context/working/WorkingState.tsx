@@ -7,6 +7,7 @@ import {
   STOP_SESSION,
   TICK,
   UPDATE_TIME_LEFT,
+  RESET,
   IWorkingState,
   ITime
 } from '../types';
@@ -33,10 +34,11 @@ export const WorkingState: React.FC = ({ children }) => {
   const tick = (): void => dispatch({ type: TICK });
   const updateTimeLeft = (payload: number): void =>
     dispatch({ type: UPDATE_TIME_LEFT, payload });
+  const reset = (): void => dispatch({ type: RESET });
 
   // create new object to prevent re-render
   const value = Object.assign(
-    { startSession, stopSession, tick, updateTimeLeft },
+    { startSession, stopSession, reset, tick, updateTimeLeft },
     state
   );
 

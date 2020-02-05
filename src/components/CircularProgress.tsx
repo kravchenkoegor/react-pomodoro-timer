@@ -2,8 +2,8 @@ import React from 'react';
 
 // https://codedaily.io/tutorials/79/Create-an-Animated-Circular-Progress-Indicator-to-Track-Article-Read-Percentage-in-React
 
-const DIAMETER = 290;
-const STROKE_WIDTH = 50;
+const DIAMETER = window.innerWidth < 768 ? 290 : 290 * 1.5;
+const STROKE_WIDTH = window.innerWidth < 768 ? 50 : 50 * 1.25;
 const RADIUS = DIAMETER / 2 - STROKE_WIDTH / 2;
 const CIRCUMFERENCE = Math.PI * RADIUS * 2;
 

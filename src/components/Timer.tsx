@@ -35,25 +35,65 @@ const calculateProgress = (
 };
 
 const Timer: React.FC = () => {
-  const { isBreak, isWorking, timeLeft, updateTimeLeft }: any = useContext(
-    WorkingContext
+  const {
+    completed,
+    endTime,
+    isBreak,
+    isWorking,
+    timeLeft,
+    sessionPaused,
+    startSession,
+    updateTimeLeft
+  } = useContext(WorkingContext);
+
+  const { autoStart, longBreak, shortBreak, workDuration } = useContext(
+    SettingsContext
   );
-  const { workDuration, shortBreak } = useContext(SettingsContext);
 
   const updateTimeLeftCallback = useCallback(
     () => {
       if (!isWorking && !isBreak) {
+        updateTimeLeft(workDuration);
         return;
       }
 
-      updateTimeLeft(isWorking ? workDuration : shortBreak);
+      if (!sessionPaused && !endTime) {
+        isWorking
+          ? updateTimeLeft(workDuration)
+          : updateTimeLeft(
+              completed && completed % 4 === 0 ? longBreak : shortBreak
+            );
+
+        autoStart && startSession();
+      }
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [isBreak, isWorking, shortBreak, workDuration]
+    [
+      autoStart,
+      completed,
+      endTime,
+      isBreak,
+      isWorking,
+      longBreak,
+      sessionPaused,
+      shortBreak,
+      workDuration
+    ]
   );
 
   const progress = useCallback(
-    () => calculateProgress(timeLeft, isWorking ? workDuration : shortBreak),
+    () => {
+      if (!isWorking && !isBreak) {
+        return calculateProgress(timeLeft, workDuration);
+      }
+
+      return isWorking
+        ? calculateProgress(timeLeft, workDuration)
+        : calculateProgress(
+            timeLeft,
+            completed && completed % 4 === 0 ? longBreak : shortBreak
+          );
+    },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [timeLeft, shortBreak, workDuration]
   );

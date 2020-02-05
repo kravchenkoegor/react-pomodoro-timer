@@ -3,6 +3,7 @@ import {
   STOP_SESSION,
   TICK,
   UPDATE_TIME_LEFT,
+  RESET,
   IActionState,
   IWorkingState,
   ITime
@@ -37,7 +38,7 @@ const handlers: { [k: string]: IWorkingState } = {
       ...state,
       isWorking: !isWorking && !isBreak ? true : isWorking,
       session: true,
-      sessionOnPause: false,
+      sessionPaused: false,
       startTime: new Date(),
       endTime: addTime(new Date(), state.timeLeft)
     };
@@ -46,7 +47,7 @@ const handlers: { [k: string]: IWorkingState } = {
     return {
       ...state,
       session: false,
-      sessionOnPause: true
+      sessionPaused: true
     };
   },
   [TICK]: (state: IWorkingState): IWorkingState => {
@@ -89,6 +90,17 @@ const handlers: { [k: string]: IWorkingState } = {
         minutes: payload,
         seconds: 0
       }
+    };
+  },
+  [RESET]: (state: IWorkingState) => {
+    const { startTime, endTime, ...rest } = state;
+
+    return {
+      ...rest,
+      isBreak: false,
+      isWorking: false,
+      session: false,
+      sessionPaused: false
     };
   },
   // @ts-ignore
