@@ -14,4 +14,5 @@ I made this app having used React, TypeScript and React Hooks.
 ## How to run the project
 
 Clone the project, then enter the project directory and type `npm i` to install dependencies.
+
 Then run `npm start` to start the project.
